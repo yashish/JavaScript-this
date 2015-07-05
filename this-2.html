@@ -1,0 +1,32 @@
+<h1> this Demo - 2 </h1>
+<script type="text/javascript">
+	/*	All in all, the scope of "this" can be very confusing and change depending on how a function is called.
+	We can mitigate this by following a pattern of enclosing "this" inside a closure within the function to the intended object.
+	In this design pattern, we use a function object rather than an object literal to enclose "this" in a closure within the function.
+	*/
+	var psychic = {
+		answer: "Probably...",
+		askQuestion: function(answered){
+			console.log("The bones tell me... " +  this.answer);
+			answered(this.answer);
+		}
+	}
+
+    /* Changing to a function and returning an object after immediately executing it.
+      Since we are invoking the function and returning it, the scope of "this" is set to the outer function debunker through a closure.
+      This is called the Revealing Module Pattern */
+	var debunker = function(){
+		var answer = "Fraud!",
+		var debunk = function(){
+			console.log("No way! Fraud! The real answer is: " +  this.answer);
+		};
+
+		return {
+			debunk: debunk
+		};
+	}();
+
+	//It all works as intended with the correct scoping for "this"
+	psychic.askQuestion(debunker.debunk);
+
+</script>

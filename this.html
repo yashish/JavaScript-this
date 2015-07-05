@@ -1,0 +1,35 @@
+<h1> this Demo - 1 </h1>
+<script type="text/javascript">
+	//This will throw an exception of undefined type for "answer"
+	//The exception is thrown because "answer" ia a key in our object literal and not a variable
+	var psychic = {
+		answer: "Probably...",
+		askQuestion: function(){
+			console.log("The bones tell me... " +  answer);
+		}
+	}
+
+	psychic.askQuestion();
+</script>
+
+<script type="text/javascript">
+	//Overwrite psychic object and now will not throw the exception due to the use of "this"
+	//Using "this" is the way to access the key inside the object literal
+	var psychic = {
+		answer: "Probably...",
+		askQuestion: function(){
+			console.log("The bones tell me... " +  this.answer);
+		}
+	}
+
+	psychic.askQuestion();
+
+	/* Even though it works above, unlike C# or Java, "this" works differently in JavaScript.
+	   In C# or Java "this" would ALWAYS refer to the enclosing class instance. 
+
+	   Not so in JavaScript. In the expression psychic.answerQuestion();
+	   "this" is scoped to the function owner, here the psychic object. If using an object literal, then "this" is scoped to the left of the dot.
+
+	   Unfortunately this rule does not always hold! "this" gets scoped on HOW your function is called. More on this in this-1.html
+	*/
+</script>

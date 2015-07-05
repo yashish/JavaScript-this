@@ -1,0 +1,63 @@
+<h1> this Demo - 1 </h1>
+<script type="text/javascript">
+	//Add a callback that gets executed after askQuestion is called.
+	//Passing in the anonymous callback function, "this" still works as expected
+	var psychic = {
+		answer: "Probably...",
+		askQuestion: function(answered){
+			console.log("The bones tell me... " +  this.answer);
+			answered(this.answer);
+		}
+	}
+
+	//Now pass in an anonymous function taking advantage of JavaScript's functional nature
+	psychic.askQuestion(function(answer){
+		console.log("Thanks..that's what I thought: '" + answer + "'");
+	});
+</script>
+
+<script type="text/javascript">
+	//Now let's pass in another function from another object as the callback function.
+	var psychic = {
+		answer: "Probably...",
+		askQuestion: function(answered){
+			console.log("The bones tell me... " +  this.answer);
+			answered(this.answer);
+		}
+	}
+
+	var debunker = {
+		answer: "Fraud!",
+		debunk: function(){
+			console.log("No way! Fraud! The real answer is: " +  this.answer);
+		}
+	}
+
+	/*In this scenario, "this" is scoped upon invocation. If a function is not invoked as
+	  as part of a parent container, it is made global!! Here it's attached to the DOMWindow.
+	  Since the DOMWindow has no property called "answer", running below will say undefined.
+	*/
+	psychic.askQuestion(debunker.debunk);
+
+	//The callback function works as intended if called on its own and does not return undefined.
+	debunker.debunk();
+
+	//Now if we use the object name inside the debunker object, then "this" will be scoped to debunker
+	var debunker = {
+		answer: "Fraud!",
+		debunk: function(){
+			console.log("No way! Fraud! The real answer is: " +  debunker.answer);
+		}
+	}
+	
+	//So it now works as expected
+	psychic.askQuestion(debunker.debunk);
+
+	/* Thing is, when the callback is passed as a function reference using debunker.debunk and not executed as debunker.debunk(), then the debunk function has no owner when it was called. If it has no owner, it automatically attaches itself to the parent object - which is DOMWindow!
+
+	All in all, the scope of "this" can be very confusing and change depending on how a function is called.
+	We can mitigate this by following a pattern of enclosing "this" inside a closure within the function to the intended object.
+	See this-2.html for the resolution and accepted practice.
+	*/
+
+</script>
